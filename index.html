@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ella's E-Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: #fdf6f0;
+    }
+
+    .screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: opacity 1s;
+    }
+
+    #intro {
+      background: linear-gradient(to top, #a2d4f7, #e0f7fa);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    #intro h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 60px;
+      color: #c94c4c;
+      margin-bottom: 40px;
+    }
+
+    #enterButton {
+      font-size: 24px;
+      padding: 12px 24px;
+      background-color: #c94c4c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #enterButton:hover {
+      background-color: #a33a3a;
+    }
+
+    #ecard {
+      display: none;
+      padding: 40px 20px;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      text-align: center;
+    }
+
+    h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 48px;
+      color: #c94c4c;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin: 30px 0 10px;
+    }
+
+    .image-box {
+      width: 220px;
+      height: 220px;
+      transition: transform 0.3s;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .values {
+      display: flex;
+      justify-content: center;
+      gap: 140px;
+      font-size: 36px;
+      font-family: 'Great Vibes', cursive;
+      color: #444;
+      margin-top: 10px;
+    }
+
+    input[type="range"] {
+      width: 400px;
+      -webkit-appearance: none;
+      height: 8px;
+      background: #c94c4c;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #c94c4c;
+      cursor: pointer;
+      border: 2px solid white;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #c94c4c;
+      cursor: pointer;
+      border: 2px solid white;
+    }
+
+    .enterScreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      text-align: center;
+    }
+
+    #generateVoucherButton {
+      display: none;
+      font-size: 24px;
+      padding: 12px 24px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #generateVoucherButton:hover {
+      background-color: #45a049;
+    }
+
+    #voucherPage {
+      display: none;
+      text-align: center;
+      font-size: 36px;
+      color: #c94c4c;
+      font-family: 'Great Vibes', cursive;
+      margin-top: 5%;
+    }
+
+    #voucherPage img {
+      max-width: 80%;
+      margin-top: 20px;
+      border-radius: 12px;
+    }
+
+    /* FINAL PAGE CODE THAT YOU PROVIDED */
+    #finalPage {
+      display: none;
+      text-align: center;
+    }
+
+    #finalPage img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Intro screen -->
+<div id="intro" class="screen">
+  <div class="enterScreen">
+    <h1>Ella's E-Card</h1>
+    <button id="enterButton">Enter</button>
+  </div>
+</div>
+
+<!-- E-card screen -->
+<div id="ecard" class="screen">
+  <h2>Happy Birthday Ella!</h2>
+  <div class="container">
+    <div class="image-box" id="bikeBox">
+      <img id="bikeImage" src="https://pngimg.com/uploads/bicycle/bicycle_PNG5380.png" alt="Bicycle">
+    </div>
+    <input type="range" id="slider" min="0" max="250" value="125">
+    <div class="image-box" id="glassesBox">
+      <img id="glassesImage" src="https://pngimg.com/uploads/sunglasses/sunglasses_PNG142.png" alt="Sunglasses">
+    </div>
+  </div>
+  <div class="values">
+    <div>€<span id="bikeValue">125</span></div>
+    <div>€<span id="glassesValue">125</span></div>
+  </div>
+  <!-- Generate Voucher button -->
+  <button id="generateVoucherButton">Generate Voucher</button>
+</div>
+
+<!-- Voucher Page -->
+<div id="voucherPage">
+  <h2>Look Up!</h2>
+  <img src="https://i.imgur.com/5V7u6CU.jpg" alt="Look Up Image">
+  <div id="timer"></div>
+</div>
+
+<!-- YOUR EXACT FINAL PAGE (Fourth Screen) -->
+<div id="finalPage">
+  <img src="https://i.imgur.com/5V7u6CU.png" alt="Image" style="width: 100%; height: auto;">
+</div>
+
+<script>
+  const slider = document.getElementById("slider");
+  const bikeValue = document.getElementById("bikeValue");
+  const glassesValue = document.getElementById("glassesValue");
+  const bikeImage = document.getElementById("bikeImage");
+  const glassesImage = document.getElementById("glassesImage");
+  const generateVoucherButton = document.getElementById("generateVoucherButton");
+  const voucherPage = document.getElementById("voucherPage");
+  const finalPage = document.getElementById("finalPage");
+
+  let sliderMoved = false;
+
+  function updateSlider() {
+    const value = parseInt(slider.value);
+    const bikeOpacity = 100 - (value / 250) * 100;
+    const glassesOpacity = (value / 250) * 100;
+
+    bikeImage.style.opacity = `${bikeOpacity}%`;
+    glassesImage.style.opacity = `${glassesOpacity}%`;
+
+    bikeValue.textContent = 250 - value;
+    glassesValue.textContent = value;
+
+    if (!sliderMoved && value !== 125) {
+      sliderMoved = true;
+      generateVoucherButton.style.display = "inline-block";
+    }
+  }
+
+  slider.addEventListener("input", updateSlider);
+
+  slider.addEventListener("change", () => {
+    const value = parseInt(slider.value);
+    if (value === 0 || value === 250) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+  });
+
+  generateVoucherButton.addEventListener("click", () => {
+    document.getElementById("ecard").style.transition = "opacity 1s";
+    document.getElementById("ecard").style.opacity = 0;
+
+    setTimeout(() => {
+      document.getElementById("ecard").style.display = "none";
+      voucherPage.style.display = "block";
+      voucherPage.style.opacity = 1;
+
+      let countdown = 3;
+      const timerInterval = setInterval(() => {
+        countdown--;
+        if (countdown < 0) {
+          clearInterval(timerInterval);
+          voucherPage.innerHTML = "<h2>Voucher Delivered!</h2>";
+          setTimeout(() => {
+            voucherPage.style.transition = "opacity 1s";
+            voucherPage.style.opacity = 0;
+            setTimeout(() => {
+              voucherPage.style.display = "none";
+              // Delay final page for 3 seconds
+              setTimeout(() => {
+                finalPage.style.display = "block";
+                finalPage.style.opacity = 1;
+              }, 3000); // Wait 3 seconds before showing final page
+            }, 1000); // Wait for 2 seconds before fading out
+          }, 2000); // Wait for 2 seconds before fading out
+        }
+      }, 1000);
+    }, 1000);
+  });
+
+  document.getElementById("enterButton").addEventListener("click", () => {
+    document.getElementById("intro").style.opacity = 0;
+    setTimeout(() => {
+      document.getElementById("intro").style.display = "none";
+      document.getElementById("ecard").style.display = "block";
+    }, 1000);
+  });
+
+  updateSlider();
+</script>
+
+</body>
+</html>
