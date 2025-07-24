@@ -1,316 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ella's E-Card</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: Arial, sans-serif;
-      background: #fdf6f0;
-    }
-
-    .screen {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transition: opacity 1s;
-    }
-
-    #intro {
-      background: linear-gradient(to top, #a2d4f7, #e0f7fa);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-    }
-
-    #intro h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 60px;
-      color: #c94c4c;
-      margin-bottom: 40px;
-    }
-
-    #enterButton {
-      font-size: 24px;
-      padding: 12px 24px;
-      background-color: #c94c4c;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    #enterButton:hover {
-      background-color: #a33a3a;
-    }
-
-    #ecard {
-      display: none;
-      padding: 40px 20px;
-      width: 100%;
-      height: 100%;
-      overflow-y: auto;
-      text-align: center;
-    }
-
-    h2 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 48px;
-      color: #c94c4c;
-      margin-bottom: 20px;
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 40px;
-      margin: 30px 0 10px;
-    }
-
-    .image-box {
-      width: 220px;
-      height: 220px;
-      transition: transform 0.3s;
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reece Insult Generator</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    background: #fdfdfd;
+    font-size: 1.5rem;
+  }
+  #insult-container {
+    margin-bottom: 1.5rem;
+  }
+  #insult-container span {
+    display: inline-block;
+    transform-origin: center bottom;
+  }
+  .animate {
+    animation: scaleIn 0.3s ease forwards;
+  }
+  .animate:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .animate:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
       opacity: 0;
-      transition: opacity 0.3s ease;
     }
-
-    .values {
-      display: flex;
-      justify-content: center;
-      gap: 140px;
-      font-size: 36px;
-      font-family: 'Great Vibes', cursive;
-      color: #444;
-      margin-top: 10px;
+    to {
+      transform: scale(1);
+      opacity: 1;
     }
-
-    input[type="range"] {
-      width: 400px;
-      -webkit-appearance: none;
-      height: 8px;
-      background: #c94c4c;
-      border-radius: 5px;
-      outline: none;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #c94c4c;
-      cursor: pointer;
-      border: 2px solid white;
-    }
-
-    input[type="range"]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #c94c4c;
-      cursor: pointer;
-      border: 2px solid white;
-    }
-
-    .enterScreen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      text-align: center;
-    }
-
-    #generateVoucherButton {
-      display: none;
-      font-size: 24px;
-      padding: 12px 24px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    #generateVoucherButton:hover {
-      background-color: #45a049;
-    }
-
-    #voucherPage {
-      display: none;
-      text-align: center;
-      font-size: 36px;
-      color: #c94c4c;
-      font-family: 'Great Vibes', cursive;
-      margin-top: 5%;
-    }
-
-    #voucherPage img {
-      max-width: 80%;
-      margin-top: 20px;
-      border-radius: 12px;
-    }
-
-    /* FINAL PAGE CODE THAT YOU PROVIDED */
-    #finalPage {
-      display: none;
-      text-align: center;
-    }
-
-    #finalPage img {
-      width: 100%;
-      height: auto;
-    }
-  </style>
+  }
+  button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    background-color: #111;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  button:hover {
+    background-color: #444;
+  }
+</style>
 </head>
 <body>
 
-<!-- Intro screen -->
-<div id="intro" class="screen">
-  <div class="enterScreen">
-    <h1>Ella's E-Card</h1>
-    <button id="enterButton">Enter</button>
-  </div>
+<div id="insult-container">
+  Reece is a <span id="blank1"></span> <span id="blank2"></span><span id="exclamation" style="visibility:hidden;">!</span>
 </div>
 
-<!-- E-card screen -->
-<div id="ecard" class="screen">
-  <h2>Happy Birthday Ella!</h2>
-  <div class="container">
-    <div class="image-box" id="bikeBox">
-      <img id="bikeImage" src="https://pngimg.com/uploads/bicycle/bicycle_PNG5380.png" alt="Bicycle">
-    </div>
-    <input type="range" id="slider" min="0" max="250" value="125">
-    <div class="image-box" id="glassesBox">
-      <img id="glassesImage" src="https://pngimg.com/uploads/sunglasses/sunglasses_PNG142.png" alt="Sunglasses">
-    </div>
-  </div>
-  <div class="values">
-    <div>€<span id="bikeValue">125</span></div>
-    <div>€<span id="glassesValue">125</span></div>
-  </div>
-  <!-- Generate Voucher button -->
-  <button id="generateVoucherButton">Generate Voucher</button>
-</div>
-
-<!-- Voucher Page -->
-<div id="voucherPage">
-  <h2>Look Up!</h2>
-  <img src="https://i.imgur.com/5V7u6CU.jpg" alt="Look Up Image">
-  <div id="timer"></div>
-</div>
-
-<!-- YOUR EXACT FINAL PAGE (Fourth Screen) -->
-<div id="finalPage">
-  <img src="https://i.imgur.com/5V7u6CU.png" alt="Image" style="width: 100%; height: auto;">
-</div>
+<button id="btn">Generate Insult</button>
 
 <script>
-  const slider = document.getElementById("slider");
-  const bikeValue = document.getElementById("bikeValue");
-  const glassesValue = document.getElementById("glassesValue");
-  const bikeImage = document.getElementById("bikeImage");
-  const glassesImage = document.getElementById("glassesImage");
-  const generateVoucherButton = document.getElementById("generateVoucherButton");
-  const voucherPage = document.getElementById("voucherPage");
-  const finalPage = document.getElementById("finalPage");
+  const adj = [
+    'stinking','smelly','massive','grimy','crusty','feral','moldy','limp','soggy','deranged',
+    'putrid','greasy','slimy','sweaty','farty','drippy','rank','nasty','filthy','clammy',
+    'dingy','gunky','hairy','moist','twitchy','awkward','foul-mouthed','bug-eyed','oily','guttural'
+  ];
 
-  let sliderMoved = false;
+  const noun = [
+    'wanker','clown','knobhead','goblin','arse ferret','dick waffle','nut goblin','toilet brush',
+    'twat rocket','gremlin','sad goth','fart goblin','arse candle','muffin stain','crotch goblin',
+    'plonker','dicknugget','spunk trumpet','troll boy','lard merchant','piss wizard','fuck trumpet',
+    'puddle weasel','scrotum sponge','bellend','cream weasel','flannel-faced twit','arsehole',
+    'sock puppet','toenail hoarder','butt sniffer','soggy baguette','bootlicking muffin','gobshite',
+    'pea-brained walnut','ham goblin','pickle snorter','crayon eater','eggheaded jester',
+    'mayo gremlin','colon cowboy','ankle biter','boot snogger','fart collector','twiglet choker',
+    'screaming toenail','yeast goblin','spaghetti-handed muppet','gravy guzzler',
+    'cabbage magician','dusty trombone','yoghurt wizard','sandal-licker','crotch tuba',
+    'glue drinker','toe whisperer','thumb enthusiast','g-string gnome','lawn chair demon',
+    'flatulent cryptid','snail tickler','cream gobbler','donut leech','ferret wrangler',
+    'bedpan jockey','jam sniffer','nipple bard','squid librarian','hairball sculptor',
+    'dung gnome','wobble priest','trouser banshee','grumble dwarf','milk pirate','egg spooner',
+    'bog witch','napkin hoarder','troll cupcake','earwax whisperer','hedge-fondler',
+    'kneecap licker','waffle snout','lube gremlin','rat-faced dilbert','wet sock',
+    'cursed pastry','dust muncher','faceplant factory','foot fungus bard','tuna clown',
+    'meatball philosopher','gargoyle snuggler','armpit bard','swamp muffin','braincell fugitive',
+    'hamster whisperer','toe bandit','pickle pirate','tinfoil monk','marshmallow crusader',
+    'banana vandal','flesh mannequin','nipple vandal','meme lizard','butter gargoyle',
+    'egg sneezer','deli phantom','milkshake cultist','moss inspector','bellybutton sniper',
+    'crumpet fiend','groin oracle','egg gremlin','moist toad','tissue wizard','goblet sniffer',
+    'marmite druid','snorkel tickler','pubic elf','angry scone','shampoo vandal',
+    'candle fondler','yoghurt prophet','wasp wrangler','flapjack traitor','sock gremlin',
+    'mayonnaise overlord','croissant assassin','potato bard','lint sorcerer'
+  ];
 
-  function updateSlider() {
-    const value = parseInt(slider.value);
-    const bikeOpacity = 100 - (value / 250) * 100;
-    const glassesOpacity = (value / 250) * 100;
-
-    bikeImage.style.opacity = `${bikeOpacity}%`;
-    glassesImage.style.opacity = `${glassesOpacity}%`;
-
-    bikeValue.textContent = 250 - value;
-    glassesValue.textContent = value;
-
-    if (!sliderMoved && value !== 125) {
-      sliderMoved = true;
-      generateVoucherButton.style.display = "inline-block";
-    }
+  function rand(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  slider.addEventListener("input", updateSlider);
+  const blank1 = document.getElementById('blank1');
+  const blank2 = document.getElementById('blank2');
+  const exclamation = document.getElementById('exclamation');
+  const btn = document.getElementById('btn');
 
-  slider.addEventListener("change", () => {
-    const value = parseInt(slider.value);
-    if (value === 0 || value === 250) {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+  let firstClick = true;
+
+  btn.addEventListener('click', () => {
+    if (firstClick) {
+      blank1.textContent = 'marathon';
+      blank2.textContent = 'denier';
+      exclamation.style.visibility = 'visible';
+      animateWords();
+      firstClick = false;
+      return;
     }
+
+    blank1.textContent = rand(adj);
+    blank2.textContent = rand(noun);
+    exclamation.style.visibility = 'visible';
+    animateWords();
   });
 
-  generateVoucherButton.addEventListener("click", () => {
-    document.getElementById("ecard").style.transition = "opacity 1s";
-    document.getElementById("ecard").style.opacity = 0;
+  function animateWords() {
+    blank1.classList.remove('animate');
+    blank2.classList.remove('animate');
 
-    setTimeout(() => {
-      document.getElementById("ecard").style.display = "none";
-      voucherPage.style.display = "block";
-      voucherPage.style.opacity = 1;
+    // force reflow
+    void blank1.offsetWidth;
+    void blank2.offsetWidth;
 
-      let countdown = 3;
-      const timerInterval = setInterval(() => {
-        countdown--;
-        if (countdown < 0) {
-          clearInterval(timerInterval);
-          voucherPage.innerHTML = "<h2>Voucher Delivered!</h2>";
-          setTimeout(() => {
-            voucherPage.style.transition = "opacity 1s";
-            voucherPage.style.opacity = 0;
-            setTimeout(() => {
-              voucherPage.style.display = "none";
-              // Delay final page for 3 seconds
-              setTimeout(() => {
-                finalPage.style.display = "block";
-                finalPage.style.opacity = 1;
-              }, 3000); // Wait 3 seconds before showing final page
-            }, 1000); // Wait for 2 seconds before fading out
-          }, 2000); // Wait for 2 seconds before fading out
-        }
-      }, 1000);
-    }, 1000);
-  });
-
-  document.getElementById("enterButton").addEventListener("click", () => {
-    document.getElementById("intro").style.opacity = 0;
-    setTimeout(() => {
-      document.getElementById("intro").style.display = "none";
-      document.getElementById("ecard").style.display = "block";
-    }, 1000);
-  });
-
-  updateSlider();
+    blank1.classList.add('animate');
+    blank2.classList.add('animate');
+  }
 </script>
 
 </body>
