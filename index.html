@@ -108,21 +108,28 @@
   const exclamation = document.getElementById('exclamation');
   const btn = document.getElementById('btn');
 
-  let firstClick = true;
+  let clickCount = 0;
 
   btn.addEventListener('click', () => {
-    if (firstClick) {
+    clickCount++;
+
+    if (clickCount === 1) {
+      // first click: marathon denier!
       blank1.textContent = 'marathon';
       blank2.textContent = 'denier';
       exclamation.style.visibility = 'visible';
-      animateWords();
-      firstClick = false;
-      return;
+    } else if (clickCount % 2 === 0) {
+      // every even click: an int lord!
+      blank1.textContent = 'an';
+      blank2.textContent = 'int lord';
+      exclamation.style.visibility = 'visible';
+    } else {
+      // every odd click after first: random insult!
+      blank1.textContent = rand(adj);
+      blank2.textContent = rand(noun);
+      exclamation.style.visibility = 'visible';
     }
 
-    blank1.textContent = rand(adj);
-    blank2.textContent = rand(noun);
-    exclamation.style.visibility = 'visible';
     animateWords();
   });
 
@@ -130,7 +137,7 @@
     blank1.classList.remove('animate');
     blank2.classList.remove('animate');
 
-    // force reflow
+    // force reflow to restart animation
     void blank1.offsetWidth;
     void blank2.offsetWidth;
 
